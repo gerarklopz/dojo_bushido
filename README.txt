@@ -1,9 +1,9 @@
 
 # README - Consultas SQL para Reportes
 
-Este archivo contiene consultas SQL optimizadas para obtener reportes prácticos relacionados con clientes, productos, pedidos y detalles de ventas. Las consultas están diseñadas para proporcionar información clave para supervisores o análisis de datos.
-
-# Prepare the SQL queries with changes as per the user's request
+Este archivo contiene consultas SQL optimizadas para obtener reportes prácticos relacionados con 
+clientes, productos, pedidos y detalles de ventas. Las consultas están diseñadas para proporcionar 
+información clave para supervisores o análisis de datos:
 
 -- 1. Listar todos los clientes
 SELECT 
@@ -16,7 +16,7 @@ SELECT
 FROM Clientes
 ORDER BY Apellidos, Nombre
 LIMIT 10;
--- Comentarios: Añadimos un orden alfabético y limitamos a 10 clientes, ya que solo hay 10 disponibles.
+-- Comentarios: Añadimos un orden alfabético y limitamos a 5 clientes, ya que solo hay 10 disponibles.
 
 -- 2. Mostrar los productos disponibles en stock
 SELECT 
@@ -26,8 +26,8 @@ SELECT
 FROM Productos 
 WHERE Stock > 0
 ORDER BY Nombre
-LIMIT 10;
--- Comentarios: Ordenamos por nombre y limitamos a 10 productos disponibles.
+LIMIT 6;
+-- Comentarios: Ordenamos por nombre y limitamos e.g: 6 (de 10 productos disponibles).
 
 -- 3. Obtener los pedidos realizados por un cliente específico (ID=2)
 SELECT 
@@ -79,8 +79,8 @@ FROM DetallesPedidos D
 JOIN Productos P ON D.ID_Producto = P.ID_Producto
 GROUP BY P.Nombre
 ORDER BY TotalCantidad DESC
-LIMIT 10;
--- Comentarios: Mostramos los 10 productos más vendidos, ordenados por cantidad vendida.
+LIMIT 5;
+-- Comentarios: Mostramos los 5 productos más vendidos, ordenados por cantidad vendida.
 
 -- 8. Mostrar el total gastado por cada cliente
 SELECT 
@@ -93,8 +93,8 @@ JOIN DetallesPedidos D ON P.ID_Pedido = D.ID_Pedido
 GROUP BY C.ID_Cliente
 HAVING SUM(D.Subtotal) > 0
 ORDER BY TotalGastado DESC
-LIMIT 10;
--- Comentarios: Mostramos los clientes con el total gastado, limitando a los 10 clientes con mayor gasto.
+LIMIT 3;
+-- Comentarios: Mostramos los clientes con el total gastado, limitando a los 3 clientes con mayor gasto.
 
 -- 9. Identificar productos sin ventas
 SELECT 
@@ -103,8 +103,8 @@ FROM Productos P
 LEFT JOIN DetallesPedidos D ON P.ID_Producto = D.ID_Producto
 WHERE D.ID_Producto IS NULL
 ORDER BY P.Nombre
-LIMIT 10;
--- Comentarios: Mostramos los productos sin ventas registradas, ordenados por nombre y limitados a 10.
+LIMIT 5;
+-- Comentarios: Mostramos los productos sin ventas registradas, ordenados por nombre y limitados a 5.
 
 -- 10. Obtener el promedio de productos por pedido
 SELECT 
