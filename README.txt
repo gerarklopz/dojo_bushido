@@ -124,13 +124,5 @@ FROM (
 -- Calcula el promedio de productos solicitados por pedido.
 
 
-## Explicación General y Enfoque para un Reporte
 
-- **Claridad**: Las consultas ahora están optimizadas para reportes y análisis, incluyendo la información más relevante de cada entidad (cliente, producto, pedido) sin sobrecargar la consulta con datos innecesarios.
-- **Orden y Legibilidad**: Se ha incluido un orden específico en las consultas cuando es necesario (por ejemplo, `ORDER BY`), para presentar la información de forma más estructurada y fácil de analizar.
-- **Enfoque Directo**: Las consultas están diseñadas para proporcionar información específica para un reporte, como totales de ventas, productos sin ventas, y clientes que han realizado pedidos.
-
-## Mejoras adicionales sugeridas:
-- **Filtros de fecha**: En consultas como la de clientes o pedidos, podrías añadir un filtro de fecha para realizar análisis dentro de rangos específicos (por ejemplo, ventas mensuales, clientes que compraron en el último trimestre).
-- **Agregados por categorías**: Si los productos tienen categorías, podrías agregar agrupaciones para obtener los totales por tipo de producto.
 
