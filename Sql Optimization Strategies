@@ -1,0 +1,77 @@
+/** Estrategias para Optimización de Consultas SQL **/
+
+/** 1. Usar EXPLAIN **/
+-- Analiza cómo MySQL ejecuta una consulta, mostrando índices, uniones y tipos de búsqueda.
+-- Identifica posibles cuellos de botella.
+EXPLAIN SELECT Nombre FROM Productos WHERE Stock > 0;
+-- Verifica si se está usando un índice en la columna 'Stock'.
+
+/** 2. Crear índices en columnas clave **/
+-- Los índices mejoran la velocidad de búsqueda en columnas usadas frecuentemente.
+CREATE INDEX idx_Stock ON Productos(Stock);
+-- Índice en la columna 'Stock' para mejorar búsquedas.
+
+/** 3. Evitar SELECT * **/
+-- Recuperar solo las columnas necesarias reduce la carga y el tráfico de red.
+-- Ejemplo optimizado:
+SELECT Nombre, Precio FROM Productos WHERE Stock > 0;
+-- Se seleccionan solo columnas relevantes, en lugar de todas.
+
+/** 4. Usar JOIN en lugar de subconsultas **/
+-- Las uniones (JOIN) son más eficientes que las subconsultas.
+-- Subconsulta lenta:
+SELECT Nombre FROM Clientes WHERE ID_Cliente IN (
+    SELECT ID_Cliente FROM Pedidos
+);
+-- JOIN optimizado:
+SELECT DISTINCT C.Nombre 
+FROM Clientes C 
+JOIN Pedidos P ON C.ID_Cliente = P.ID_Cliente;
+
+/** 5. Limitar resultados con LIMIT **/
+-- Restringe el número de filas devueltas para vistas previas o análisis parciales.
+SELECT * FROM Clientes ORDER BY Apellidos LIMIT 10;
+-- Devuelve solo los primeros 10 registros ordenados alfabéticamente.
+
+/** 6. Optimizar GROUP BY y HAVING **/
+-- Filtra datos antes de agrupar usando WHERE en lugar de HAVING.
+-- Ineficiente:
+SELECT Nombre, SUM(Precio) AS Total 
+FROM Productos 
+GROUP BY Nombre 
+HAVING SUM(Precio) > 100;
+-- Optimizado:
+SELECT Nombre, SUM(Precio) AS Total 
+FROM Productos 
+WHERE Precio > 100 
+GROUP BY Nombre;
+
+/** 7. Desnormalización (cuando sea viable) **/
+-- Duplica datos para reducir uniones complejas y acelerar consultas.
+-- Crear una tabla de reportes preprocesados:
+CREATE TABLE ReporteVentas AS 
+SELECT C.Nombre, SUM(D.Subtotal) AS Total 
+FROM Clientes C 
+JOIN Pedidos P ON C.ID_Cliente = P.ID_Cliente 
+JOIN DetallesPedidos D ON P.ID_Pedido = D.ID_Pedido 
+GROUP BY C.ID_Cliente;
+
+/** 8. Usar IN en lugar de OR **/
+-- La cláusula IN suele ser más eficiente que múltiples condiciones con OR.
+-- Ineficiente:
+SELECT * FROM Productos WHERE ID_Producto = 1 OR ID_Producto = 2;
+-- Optimizado:
+SELECT * FROM Productos WHERE ID_Producto IN (1, 2);
+
+/** 9. Evitar funciones en columnas **/
+-- Aplicar funciones en columnas en condiciones WHERE deshabilita el uso de índices.
+-- Consulta lenta:
+SELECT * FROM Clientes WHERE UPPER(Nombre) = 'JUAN';
+-- Consulta optimizada:
+SELECT * FROM Clientes WHERE Nombre = 'Juan';
+
+/** 10. Usar tablas temporales **/
+-- Para operaciones complejas, dividir el proceso en pasos con tablas temporales.
+CREATE TEMPORARY TABLE Temp_Productos AS 
+SELECT Nombre, Stock FROM Productos WHERE Stock > 0;
+-- Mejora la eficiencia al reutilizar resultados parciales.
