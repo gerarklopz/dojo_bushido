@@ -1,9 +1,9 @@
 
-# README - Consultas SQL para Reportes
+/* README - Consultas SQL para Reportes
 
 Este archivo contiene consultas SQL optimizadas para obtener reportes prácticos relacionados con 
 clientes, productos, pedidos y detalles de ventas. Las consultas están diseñadas para proporcionar 
-información clave para supervisores o análisis de datos:
+información clave para supervisores o análisis de datos: */
 
 -- 1. Listar todos los clientes
 SELECT 
@@ -16,7 +16,7 @@ SELECT
 FROM Clientes
 ORDER BY Apellidos, Nombre
 LIMIT 10;
--- Comentarios: Añadimos un orden alfabético y limitamos a 5 clientes, ya que solo hay 10 disponibles.
+-- Añadir un orden alfabético y limitamos a 5 clientes, ya que solo hay 10 disponibles.
 
 -- 2. Mostrar los productos disponibles en stock
 SELECT 
@@ -27,7 +27,7 @@ FROM Productos
 WHERE Stock > 0
 ORDER BY Nombre
 LIMIT 6;
--- Comentarios: Ordenamos por nombre y limitamos e.g: 6 (de 10 productos disponibles).
+-- Para ordenar por nombre y limitamos e.g: 6 (de 10 productos disponibles).
 
 -- 3. Obtener los pedidos realizados por un cliente específico (ID=2)
 SELECT 
@@ -37,7 +37,7 @@ FROM Pedidos
 WHERE ID_Cliente = 2
 ORDER BY Fecha_Pedido DESC
 LIMIT 10;
--- Comentarios: Mostramos los pedidos del cliente con ID=2, ordenados por fecha (descendente) y limitados a 10.
+-- Se muestran los pedidos del cliente con ID=2, ordenados por fecha (descendente) y limitados a 10.
 
 -- 4. Listar los productos incluidos en un pedido específico (ID_Pedido=5)
 SELECT 
@@ -50,14 +50,14 @@ JOIN Productos P ON D.ID_Producto = P.ID_Producto
 WHERE D.ID_Pedido = 5
 ORDER BY P.Nombre
 LIMIT 10;
--- Comentarios: Mostramos los productos de un pedido específico (ID=5) y los ordenamos alfabéticamente por nombre.
+-- Mostramos los productos de un pedido específico (ID=5) y los ordenamos alfabéticamente por nombre.
 
 -- 5. Calcular el valor total de un pedido específico (ID_Pedido=5)
 SELECT 
     SUM(D.Subtotal) AS TotalPedido
 FROM DetallesPedidos D
 WHERE D.ID_Pedido = 5;
--- Comentarios: Calculamos el total del pedido con ID=5.
+-- PAra calcular el valor total: Calculamos el total del pedido con ID=5.
 
 -- 6. Obtener los clientes que realizaron al menos un pedido
 SELECT C.Nombre, 
@@ -69,7 +69,7 @@ WHERE EXISTS (
     WHERE P.ID_Cliente = C.ID_Cliente
 )
 LIMIT 10;
--- Comentarios: Usamos EXISTS para mejorar la eficiencia y limitamos el número de clientes a 10.
+-- Uso páctico: Usamos EXISTS para mejorar la eficiencia y limitamos el número de clientes a 10.
 
 -- 7. Listar los productos más vendidos
 SELECT 
@@ -80,7 +80,7 @@ JOIN Productos P ON D.ID_Producto = P.ID_Producto
 GROUP BY P.Nombre
 ORDER BY TotalCantidad DESC
 LIMIT 5;
--- Comentarios: Mostramos los 5 productos más vendidos, ordenados por cantidad vendida.
+-- Aquí Mostramos los 5 productos más vendidos, ordenados por cantidad vendida.
 
 -- 8. Mostrar el total gastado por cada cliente
 SELECT 
@@ -104,7 +104,7 @@ LEFT JOIN DetallesPedidos D ON P.ID_Producto = D.ID_Producto
 WHERE D.ID_Producto IS NULL
 ORDER BY P.Nombre
 LIMIT 5;
--- Comentarios: Mostramos los productos sin ventas registradas, ordenados por nombre y limitados a 5.
+-- Mostramos los productos sin ventas registradas, ordenados por nombre y limitados a 5.
 
 -- 10. Obtener el promedio de productos por pedido
 SELECT 
@@ -117,7 +117,7 @@ FROM (
     GROUP BY ID_Pedido
     HAVING SUM(Cantidad) > 0
 ) AS Subconsulta;
--- Comentarios: Mostramos el promedio de productos por pedido, sin necesidad de limitaciones.
+-- Mostramos el promedio de productos por pedido, sin necesidad de limitaciones.
 
 
 
